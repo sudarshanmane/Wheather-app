@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wheather</title>
+    <style>
+  
+        
+        #manage_input{
+            display: flex;
+
+        }
+        #manage_input>div{
+        margin-left: 10px;
+        margin-right: 10px;
+
+        }
+        button{
+            color: black;
+            margin-left: 5px;
+        }
+
+        #title{
+            margin: auto;
+            font-weight: bold ;
+            font-size: 20px;
+            margin-top:30px ;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 35px;
+        }
+        #container{
+
+            /* display: flex;
+            flex-direction: row; */
+            margin-left:20px 20px;
+            width:45%;
+
+        }
+
+
+       
+
+        
+        #allData{
+
+            display: flex;
+            width: 600px;
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+        gap:20px;
+        font-weight: bold;
+        font-size: 18px;
+        border-radius: 10px;
+
+        
+        }
+        #allData>div{
+
+
+        width: 270px;
+        display: flex;
+        align-items: center;
+        border-radius: 10px;
+        box-shadow: rgba(22, 22, 36, 0.2) 0px 7px 29px 0px;
+        background-color:rgb(225, 244, 225);
+        border: 1px solid black;
+        cursor: pointer;
+
+
+       }
+       #allData>div>div{
+           margin-left: 10px;
+
+
+       }
+
+
+     
+      #allData>div>img{
+
+        width: 50px;
+        height: 50px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-left: 10px;
+
+      }
+      #container>div:first-child{
+
+       /* border:1px solid black; */
+       margin-bottom: 35px;
+       margin-top: 15px;
+       width: 300px;
+       display: flex;
+       align-items: center;
+       font-size: 18px;
+       font-weight: bold;
+       border-radius: 10px;
+        box-shadow: rgba(22, 22, 36, 0.2) 0px 7px 29px 0px;
+        background-color:rgb(225, 244, 225);
+        border: 1px solid black;
+        cursor: pointer;
+
+
+
+      }
+
+      #container>div:first-child>img{
+          height: 100px;
+          width: 100px;
+          margin-right: 25px;
+          margin-left: 10px;
+
+          
+      }
+      #all{
+          /* border: 1px solid black; */
+          width:95%;
+          margin: auto;
+          margin-top: 20px;
+          /* background-color:rgb(117, 235, 117); */
+
+          display:flex;
+          justify-content: space-between;
+          /* border: 1px solid black; */
+          
+      }
+      #mapouter{
+          width:45%;
+          margin-left: 30px;
+          
+          display:flex;
+          justify-content: space-between;
+          margin-right: 50px;
+          /* border: 1px solid black; */
+      }
+      #gmap_canvas{
+
+        width: 100%;
+        margin-right: 20px;
+        padding-right: 20px;
+        /* border: 1px solid black; */
+      }
+      .gmap_canvas{
+        /* box-shadow: rgba(22, 22, 36, 0.2) 0px 7px 29px 0px; */
+
+      }
+      #universe{
+          /* border: 1px solid black; */
+          padding-bottom: 20px;
+      }
+
+     
+
+      .gmap_canvas {overflow:hidden;background:none!important;height:375px;width:530px;border-radius: 15px;}
+     
+      
+    
+    </style>
+</head>
+<body>
+    <div id="manage_input">
+    <div>Your City...</div>
+    <input type="text" id="getData" placeholder="Your City">
+    <button onclick="getData()">Submit</button>
+</div>
+<div id="universe">
+<div id="title"></div>
+<div id="all">
+  
+    <div id="container"></div>
+    <div class="mapouter">
+        <div class="gmap_canvas">
+        <iframe width="600" height="500" id="gmap_canvas" 
+         frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
+        </iframe>
+  
+   </div>
+</div>
+      
+</div>
+
+</div>
+
+</body>
+</html>
+
+<script>
+
+   
+    function getData(){
+        let url = `https://api.openweathermap.org/data/2.5/weather?q=${document.getElementById("getData").value}&appid=94e5c5ca118e7e83437a3dd7ebce3d92`
+
+        // console.log(url)
+
+        async function handleSData(){
+
+            let res = await fetch(url);
+
+            let data = await res.json();
+
+            console.log(data.name)
+            append(data);
+
+        }
+
+       function append(data){
+
+        let title = document.getElementById("title")
+        title.innerText = `Wheather At ${data.name}`
+
+
+           let container=document.getElementById("container")
+           container.innerHTML=null;
+
+        let box = document.createElement("div")
+        
+        let name = document.createElement("h1")
+        name.innerText = data.name;
+        name.setAttribute('id',"name")
+
+        let temp = document.createElement("div")
+        temp.innerText = `Temp : ${data.main.temp} K`
+
+        let img1 = document.createElement("img")
+        img1.src ='https://cdn-icons-png.flaticon.com/128/1163/1163657.png'
+
+        let temp_data = document.createElement("div")
+        temp_data.append(img1,temp)
+
+
+
+
+        let tempMax = document.createElement("div")
+        tempMax.innerText= `Max Temp: ${data.main.temp_max} K`
+
+        let img2 = document.createElement("img")
+        img2.src ='https://cdn-icons-png.flaticon.com/128/7614/7614430.png'
+
+        
+        let temp_max_data = document.createElement("div")
+        temp_max_data.append(img2,tempMax)
+
+
+        // let temp_min = document.createElement("div")
+        // temp_min.innerText =`Min Temp : ${data.main.temp_min} K`;
+
+        // let img3 = document.createElement("img")
+        // img3.src ='https://cdn-icons-png.flaticon.com/128/7614/7614313.png'
+
+        
+        // let temp_min_data = document.createElement("div")
+        // temp_max_data.append(img3,temp_min)
+
+
+        
+        let temp_min = document.createElement("div")
+        temp_min.innerText= `Min Temp: ${data.main.temp_min} K`
+
+        let img3 = document.createElement("img")
+        img3.src ='https://cdn-icons-png.flaticon.com/128/7614/7614313.png'
+
+        
+        let temp_min_data = document.createElement("div")
+        temp_min_data.append(img3,temp_min)
+
+
+        let humidity = document.createElement("div");
+        humidity.innerText =`Humidity : ${data.main.humidity} %`;
+        
+        let img4 = document.createElement("img")
+        img4.src ='https://cdn-icons-png.flaticon.com/128/3208/3208686.png'
+
+
+        let humidity_data = document.createElement("div")
+        humidity_data.append(img4,humidity)
+
+
+        let country = document.createElement("div")
+        country.innerText = `Country : ${data.sys.country}`
+
+         
+        let img5 = document.createElement("img")
+        img5.src ='https://cdn-icons-png.flaticon.com/128/2947/2947698.png'
+
+        let country_data = document.createElement("div")
+        country_data.append(img5,country)
+
+        
+        
+        let sunrise = document.createElement("div")
+        sunrise.innerText =  `Sunrise : ${data.sys.sunrise}`
+
+           
+        let img6 = document.createElement("img")
+        img6.src ='https://cdn-icons-png.flaticon.com/128/3175/3175147.png'
+
+        let sunrise_data = document.createElement("div")
+        sunrise_data.append(img6,sunrise)
+
+        
+
+        
+        
+        let sunset = document.createElement("div")
+        sunset.innerText = `Sunset : ${data.sys.sunset}`
+
+            
+        let img7 = document.createElement("img")
+        img7.src ='https://cdn-icons-png.flaticon.com/128/1788/1788609.png'
+
+        let sunset_data = document.createElement("div")
+        sunset_data.append(img7,sunset)
+
+
+         box.append(temp_max_data,temp_min_data,humidity_data,sunrise_data,sunset_data,country_data)
+         box.setAttribute("id","allData")
+
+        container.append(temp_data,box)
+
+        let map = document.getElementById("gmap_canvas")
+        map.innerHTML = null;
+        map.src = `https://maps.google.com/maps?q=${data.name}&t=&z=13&ie=UTF8&iwloc=&output=embed`
+
+        
+
+    
+
+       }
+
+       handleSData()
+
+
+
+
+    }
+
+   
+
+</script>
